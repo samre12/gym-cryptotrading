@@ -6,13 +6,12 @@ from gym import error, logger
 from gym_cryptotrading.generator import Generator
 from gym_cryptotrading.strings import *
 
-class BaseEnv(gym.Env):
-    action_dict = {
-            0: NEUTRAL,
-            1: LONG,
-            2: SHORT
-        } 
+from gym_cryptotrading.spaces.action import ActionSpace
+from gym_cryptotrading.spaces.observation import ObservationSpace
 
+class BaseEnv(gym.Env):
+    action_space = ActionSpace()
+    observation_space = ObservationSpace()
     metadata = {'render.modes': []}
 
     def __init__(self, history_length=100, horizon=5, unit=5e-4):
@@ -64,7 +63,7 @@ class BaseEnv(gym.Env):
         pass
 
     def _take_action(self, action):
-        if action not in BaseEnv.action_dict.keys():
+        if action not in BaseEnv.action_space.lookup.keys():
             raise error.InvalidAction()
         
     def _get_reward(self):

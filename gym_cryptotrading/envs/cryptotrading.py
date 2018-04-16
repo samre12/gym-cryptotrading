@@ -16,10 +16,10 @@ class CryptoTradingEnv(BaseEnv):
     def _take_action(self, action):
         super(CryptoTradingEnv, self)._take_action(action)
 
-        if BaseEnv.action_dict[action] is LONG:
+        if BaseEnv.action_space.lookup[action] is LONG:
             self.long = self.long + 1
             
-        elif BaseEnv.action_dict[action] is SHORT:
+        elif BaseEnv.action_space.lookup[action] is SHORT:
             self.short = self.short + 1
         
     def _get_reward(self):
@@ -34,7 +34,7 @@ class CryptoTradingEnv(BaseEnv):
         reward = self._get_reward()
 
         message = "Timestep {}:==: Action: {} ; Reward: {}".format(
-            self.timesteps, self.action_dict[action], reward
+            self.timesteps, BaseEnv.action_space.lookup[action], reward
         )
         logger.debug(message)
         
