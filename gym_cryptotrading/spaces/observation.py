@@ -2,18 +2,22 @@ import numpy as np
 
 import gym
 
+from gym_cryptotrading.strings import BAD_OBSERVATION
+
 class ObservationSpace(gym.Space):
+    max_ratio = 3.0
+
     def __init__(self):
         super(ObservationSpace, self).__init__()
 
     def sample(self):
-        super(ObservationSpace, self).sample()
+        return np.random.uniform(0, ObservationSpace.max_ratio, 4)
 
-    def contains(self):
-        super(ObservationSpace, self).contains()
+    def contains(self, obs):
+        return len(obs) == 4 and (obs >= 0.0).all() and (x <= ObservationSpace.max_ratio).all()       
 
     def to_jsonable(self, sample_n):
-        super(ObservationSpace, self).to_jsonable()
+        return np.array(sample_n).to_list()
 
     def from_jsonable(self, sample_n):
-        super(ObservationSpace, self).from_jsonable()
+        return [np.asarray(sample) for sample in sample_n]

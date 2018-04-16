@@ -19,10 +19,7 @@ class ActionSpace(gym.Space):
         return np.random.randint(0, 3)
 
     def contains(self, action):
-        if action in ActionSpace.lookup.keys():
-            return True
-        else:
-            return False
+        return action in ActionSpace.lookup.keys()
 
     def to_jsonable(self, sample_n):
         super(ActionSpace, self).to_jsonable(sample_n)
