@@ -3,8 +3,11 @@ import numpy as np
 import gym
 from gym import error, logger
 
+from abc import abstractmethod
+
 from gym_cryptotrading.generator import Generator
 from gym_cryptotrading.strings import *
+from gym_cryptotrading.errors import *
 
 from gym_cryptotrading.spaces.action import ActionSpace
 from gym_cryptotrading.spaces.observation import ObservationSpace
@@ -14,16 +17,29 @@ class BaseEnv(gym.Env):
     observation_space = ObservationSpace()
     metadata = {'render.modes': []}
 
-    def __init__(self, history_length=100, horizon=5, unit=5e-4):
+    def __init__(self):
         self.episode_number = 0
-        self.timesteps = None
-        self.history_length = history_length
-        self.horizon = horizon
-        self.unit = unit #units of Bitcoin traded each time
+        self.generator = None
 
-        self.timesteps = None
+        self.history_length = 100 
+        self.horizon = 5 
+        self.unit = 5e-4
 
-        self.generator = Generator(history_length, horizon)
+    def set_params(self, history_length, horizon, unit):
+        if self.generator:
+            raise EnvironmentAlreadyLoaded()
+
+        if history_length < 0 or horizon < 1 or unit < 0:
+            raise ValueError()
+        
+        else:
+            self.history_length = history_length
+            self.horizon = horizon
+            self.unit = unit #units of Bitcoin traded each time
+
+    def _load_gen(self):
+        if not self.generator:
+            self.generator = Generator(self.history_length, self.horizon)
 
     def _new_random_episode(self):
         '''
@@ -31,6 +47,7 @@ class BaseEnv(gym.Env):
         Need to index every episode and then generate a random index rather than going on multiple levels
         of selection.
         '''
+        self._load_gen()
         self._reset_params()
         message_list = []
         self.episode_number = self.episode_number + 1
@@ -59,13 +76,15 @@ class BaseEnv(gym.Env):
 
         return self.historical_prices[self.current - self.history_length:self.current]
     
+    @abstractmethod
     def _reset_params(self):
         pass
 
+    @abstractmethod
     def _take_action(self, action):
-        if action not in BaseEnv.action_space.lookup.keys():
-            raise error.InvalidAction()
-        
+        pass
+    
+    @abstractmethod
     def _get_reward(self):
         return 0
 
@@ -75,6 +94,10 @@ class BaseEnv(gym.Env):
     def reset(self):
         return self._new_random_episode()
 
+    @abstractmethod
     def step(self, action):
-        raise NotImplementedError()
+        state = self._get_new_state()
+        self._take_action(action)
+        reward = self._get_reward()
+        return state, reward, False, None
     

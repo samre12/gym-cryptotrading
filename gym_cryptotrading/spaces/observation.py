@@ -1,10 +1,8 @@
 import numpy as np
 
-import gym
+from gym import Space
 
-from gym_cryptotrading.strings import BAD_OBSERVATION
-
-class ObservationSpace(gym.Space):
+class ObservationSpace(Space):
     max_ratio = 3.0
 
     def __init__(self):
