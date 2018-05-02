@@ -25,17 +25,9 @@ class BaseEnv(gym.Env):
         self.horizon = 5 
         self.unit = 5e-4
 
-    def set_params(self, history_length, horizon, unit):
-        if self.generator:
-            raise EnvironmentAlreadyLoaded()
-
-        if history_length < 0 or horizon < 1 or unit < 0:
-            raise ValueError()
-        
-        else:
-            self.history_length = history_length
-            self.horizon = horizon
-            self.unit = unit #units of Bitcoin traded each time
+    @abstractmethod
+    def _set_env_specific_params(self, **kwargs):
+        pass
 
     def _load_gen(self):
         if not self.generator:
@@ -90,6 +82,20 @@ class BaseEnv(gym.Env):
 
     def _get_new_state(self):
         return self.historical_prices[self.current]
+
+    def set_params(self, history_length, horizon, unit, **kwargs):
+        if self.generator:
+            raise EnvironmentAlreadyLoaded()
+
+        if history_length < 0 or horizon < 1 or unit < 0:
+            raise ValueError()
+        
+        else:
+            self.history_length = history_length
+            self.horizon = horizon
+            self.unit = unit #units of Bitcoin traded each time
+
+            self._set_env_specific_params(**kwargs)
     
     def reset(self):
         return self._new_random_episode()

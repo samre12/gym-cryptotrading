@@ -1,1 +1,3 @@
-from gym_cryptotrading.envs.cryptotrading import CryptoTradingEnv
+from gym_cryptotrading.envs.realizedPnL import RealizedPnLEnv
+from gym_cryptotrading.envs.unrealizedPnL import UnRealizedPnLEnv
+from gym_cryptotrading.envs.weightedPnL import WeightedPnLEnv

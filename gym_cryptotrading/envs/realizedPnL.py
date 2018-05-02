@@ -5,13 +5,14 @@ from gym import error, logger
 from gym_cryptotrading.strings import *
 from gym_cryptotrading.envs.basicenv import BaseEnv
 
-class CryptoTradingEnv(BaseEnv):
+class RealizedPnLEnv(BaseEnv):
     def __init__(self):
-        super(CryptoTradingEnv, self).__init__()
+        super(RealizedPnLEnv, self).__init__()
 
     def _reset_params(self):
         self.long, self.short = 0, 0
         self.timesteps = 0
+        self.reward = 0.0
 
     def _take_action(self, action):
         if action not in BaseEnv.action_space.lookup.keys():
@@ -24,7 +25,12 @@ class CryptoTradingEnv(BaseEnv):
                 self.short = self.short + 1
         
     def _get_reward(self):
-        return (self.long - self.short) * self.unit * self.diffs[self.current]
+        self.reward = self.reward + \
+                        (self.long - self.short) * self.unit * self.diffs[self.current]
+        if self.timesteps == (self.horizon - 1):
+            return self.reward
+        else:
+            return 0.0
 
     def step(self, action):
         if not self.episode_number or self.timesteps is self.horizon:
@@ -45,4 +51,3 @@ class CryptoTradingEnv(BaseEnv):
             return state, reward, False, None
         else:
             return state, reward, True, None
-    
