@@ -106,7 +106,7 @@ class BaseEnv(gym.Env):
         return self._new_random_episode()
 
     @abstractmethod
-    def step(self, action):
+    def step(self, action):    
         state = self._get_new_state()
         self._take_action(action)
         reward = self._get_reward()

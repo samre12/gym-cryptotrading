@@ -48,6 +48,6 @@ class RealizedPnLEnv(BaseEnv):
         self.timesteps = self.timesteps + 1
         if self.timesteps is not self.horizon:
             self.current = self.current + 1
-            return state, reward, False, None
+            return state, reward, False, float(self.horizon - self.timesteps)
         else:
-            return state, reward, True, None
+            return state, reward, True, 0.0
