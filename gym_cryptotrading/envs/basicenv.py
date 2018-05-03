@@ -20,6 +20,7 @@ class BaseEnv(gym.Env):
     def __init__(self):
         self.episode_number = 0
         self.generator = None
+        self.logger = logger
 
         self.history_length = 100 
         self.horizon = 5 
@@ -64,7 +65,7 @@ class BaseEnv(gym.Env):
             )
         )
         
-        map(logger.debug, message_list)
+        map(self.logger.debug, message_list)
 
         return self.historical_prices[self.current - self.history_length:self.current]
     
@@ -82,6 +83,10 @@ class BaseEnv(gym.Env):
 
     def _get_new_state(self):
         return self.historical_prices[self.current]
+
+    def set_logger(self, custom_logger):
+        if custom_logger:
+            self.logger = custom_logger
 
     def set_params(self, history_length, horizon, unit, **kwargs):
         if self.generator:

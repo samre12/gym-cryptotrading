@@ -1,6 +1,6 @@
 import numpy as np
 
-from gym import error, logger
+from gym import error
 
 from gym_cryptotrading.strings import *
 from gym_cryptotrading.envs.basicenv import BaseEnv
@@ -37,7 +37,7 @@ class UnRealizedPnLEnv(BaseEnv):
         message = "Timestep {}:==: Action: {} ; Reward: {}".format(
             self.timesteps, BaseEnv.action_space.lookup[action], reward
         )
-        logger.debug(message)
+        self.logger.debug(message)
         
         self.timesteps = self.timesteps + 1
         if self.timesteps is not self.horizon:

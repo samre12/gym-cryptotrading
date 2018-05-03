@@ -187,6 +187,8 @@ Listing changes from [**`b9af98db728230569a18d54dcfa87f7337930314`**](https://gi
 
 - Renamed `cryptotrading.py` to `unrealizedPnL.py` to emphasize the specific reward function of the environment
 
+- Added support for setting custom logger for an environment using `env.env.set_logger(logger=)`
+
 ### Breaking Changes
 
 - Environment with **Unrealized PnL** reward function is now built using `env = gym.make('UnrealizedPnLEnv-v0')` rather than `env = gym.make('CryptoTrading-v0')`
