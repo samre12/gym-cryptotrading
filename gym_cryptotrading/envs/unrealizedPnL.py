@@ -3,9 +3,9 @@ import numpy as np
 from gym import error
 
 from gym_cryptotrading.strings import *
-from gym_cryptotrading.envs.basicenv import BaseEnv
+from gym_cryptotrading.envs.cryptoenv import CryptoEnv
 
-class UnRealizedPnLEnv(BaseEnv):
+class UnRealizedPnLEnv(CryptoEnv):
     def __init__(self):
         super(UnRealizedPnLEnv, self).__init__()
 

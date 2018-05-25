@@ -5,7 +5,7 @@ from collections import deque
 from gym import error
 
 from gym_cryptotrading.strings import *
-from gym_cryptotrading.envs.basicenv import BaseEnv
+from gym_cryptotrading.envs.cryptoenv import CryptoEnv
 
 class ExponentiallyWeightedReward:
     def __init__(self, lag, decay_rate):
@@ -36,7 +36,7 @@ class ExponentiallyWeightedReward:
     def reward(self):
         return self.sum / self.denominator
         
-class WeightedPnLEnv(BaseEnv):
+class WeightedPnLEnv(CryptoEnv):
     def __init__(self):
         super(WeightedPnLEnv, self).__init__()
 
