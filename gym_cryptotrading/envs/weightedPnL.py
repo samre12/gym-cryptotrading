@@ -5,7 +5,7 @@ from collections import deque
 from gym import error
 
 from gym_cryptotrading.strings import *
-from gym_cryptotrading.envs.basicenv import BaseEnv
+from gym_cryptotrading.envs.cryptoenv import CryptoEnv
 
 class ExponentiallyWeightedReward:
     def __init__(self, lag, decay_rate):
@@ -36,7 +36,7 @@ class ExponentiallyWeightedReward:
     def reward(self):
         return self.sum / self.denominator
         
-class WeightedPnLEnv(BaseEnv):
+class WeightedPnLEnv(CryptoEnv):
     def __init__(self):
         super(WeightedPnLEnv, self).__init__()
 
@@ -63,13 +63,13 @@ class WeightedPnLEnv(BaseEnv):
         self.reward = ExponentiallyWeightedReward(self.lag, self.decay_rate)
 
     def _take_action(self, action):
-        if action not in BaseEnv.action_space.lookup.keys():
+        if action not in CryptoEnv.action_space.lookup.keys():
             raise error.InvalidAction()
         else:
-            if BaseEnv.action_space.lookup[action] is LONG:
+            if CryptoEnv.action_space.lookup[action] is LONG:
                 self.long = self.long + 1
                 
-            elif BaseEnv.action_space.lookup[action] is SHORT:
+            elif CryptoEnv.action_space.lookup[action] is SHORT:
                 self.short = self.short + 1
         
     def _get_reward(self):
@@ -86,7 +86,7 @@ class WeightedPnLEnv(BaseEnv):
         reward = self._get_reward()
 
         message = "Timestep {}:==: Action: {} ; Reward: {}".format(
-            self.timesteps, BaseEnv.action_space.lookup[action], reward
+            self.timesteps, CryptoEnv.action_space.lookup[action], reward
         )
         self.logger.debug(message)
         
