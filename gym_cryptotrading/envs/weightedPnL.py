@@ -63,13 +63,13 @@ class WeightedPnLEnv(CryptoEnv):
         self.reward = ExponentiallyWeightedReward(self.lag, self.decay_rate)
 
     def _take_action(self, action):
-        if action not in BaseEnv.action_space.lookup.keys():
+        if action not in CryptoEnv.action_space.lookup.keys():
             raise error.InvalidAction()
         else:
-            if BaseEnv.action_space.lookup[action] is LONG:
+            if CryptoEnv.action_space.lookup[action] is LONG:
                 self.long = self.long + 1
                 
-            elif BaseEnv.action_space.lookup[action] is SHORT:
+            elif CryptoEnv.action_space.lookup[action] is SHORT:
                 self.short = self.short + 1
         
     def _get_reward(self):
@@ -86,7 +86,7 @@ class WeightedPnLEnv(CryptoEnv):
         reward = self._get_reward()
 
         message = "Timestep {}:==: Action: {} ; Reward: {}".format(
-            self.timesteps, BaseEnv.action_space.lookup[action], reward
+            self.timesteps, CryptoEnv.action_space.lookup[action], reward
         )
         self.logger.debug(message)
         
