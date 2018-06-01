@@ -63,7 +63,7 @@ class CryptoEnv(gym.Env, BaseEnv):
         
         map(self.logger.debug, message_list)
 
-        return self.historical_prices[self.current - self.history_length:self.current]
+        return self.historical_prices[self.current - self.history_length:self.current], np.array([1.0])
 
 
     def _reset_params(self):

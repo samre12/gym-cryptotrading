@@ -42,7 +42,7 @@ class UnRealizedPnLEnv(CryptoEnv):
         self.timesteps = self.timesteps + 1
         if self.timesteps is not self.horizon:
             self.current = self.current + 1
-            return state, reward, False, float(self.horizon - self.timesteps)
+            return state, reward, False, np.array([float(self.horizon - self.timesteps) / self.horizon])
         else:
-            return state, reward, True, 0.0
+            return state, reward, True, np.array([0.0])
     

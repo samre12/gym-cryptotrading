@@ -56,7 +56,7 @@ env = gym.make('RealizedPnLEnv-v0')
 
 - Use `env.reset()` to start a new random episode.
 
-    - returns history of observations prior to the starting point of the episode. Look [Parameters](#params) for more information.
+    - returns history of observations prior to the starting point of the episode, fractional remaining trades that is `[1.0]` at the start of the episode. Look [Parameters](#params) for more information.
 
     ```python
     state = env.reset() # use state to make initial prediction
@@ -66,7 +66,7 @@ env = gym.make('RealizedPnLEnv-v0')
 
 - Use `env.step(action)` to take one step in the environment.
 
-    - returns `(observation, reward, is_terminal, remaining_trades)` in respective order
+    - returns `(observation, reward, is_terminal, fractional_remaining_trades)` in respective order
 
     ```python
     observation, reward, is_terminal, remaining_trades = env.step(action)
@@ -216,3 +216,5 @@ Listing changes from [**`b9af98db728230569a18d54dcfa87f7337930314`**](https://gi
 ### Breaking Changes
 
 - Environment with **Unrealized PnL** reward function is now built using `env = gym.make('UnrealizedPnLEnv-v0')` rather than `env = gym.make('CryptoTrading-v0')`
+
+- Instead of `remaining_trades`, `env.step(action)` now outputs `np.array([fractional_remaining_trades])`. This is to take into account more supplementary information (like **technical indicators**) in the future
