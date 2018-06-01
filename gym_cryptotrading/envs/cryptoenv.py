@@ -24,6 +24,9 @@ class CryptoEnv(gym.Env, BaseEnv):
         self.generator = None
 
     def _get_new_state(self):
+        #
+        # TODO: Add support for normalized price tensors and technical indicators
+        #
         return self.historical_prices[self.current]
 
     def _load_gen(self):
@@ -48,7 +51,6 @@ class CryptoEnv(gym.Env, BaseEnv):
             )
         )
 
-        self.diffs = self.generator.diff_blocks[block_index]
         self.historical_prices = self.generator.price_blocks[block_index]
 
         self.current = np.random.randint(self.history_length,  
@@ -60,6 +62,14 @@ class CryptoEnv(gym.Env, BaseEnv):
                 self.generator.timestamp_blocks[block_index][self.current]
             )
         )
+
+        #
+        #
+        # TODO: - Add support for normalizing the price tensors and the 
+        #       associated technical indicators
+        #       - Reward to be caculated using the price tensors
+        #
+        #
         
         map(self.logger.debug, message_list)
 

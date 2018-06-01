@@ -34,6 +34,8 @@ cd gym-cryptotrading
 pip install -e .
 ```
 
+**Note:** This package requires `ta-lib` source to be installed to work. Refer [here](https://mrjbq7.github.io/ta-lib/install.html) to install `ta-lib` on different platforms.
+
 <a name="usage"></a>
 
 ## Usage
@@ -215,4 +217,4 @@ Listing changes from [**`b9af98db728230569a18d54dcfa87f7337930314`**](https://gi
 
 ### Breaking Changes
 
-- Environment with **Unrealized PnL** reward function is now built using `env = gym.make('UnrealizedPnLEnv-v0')` rather than `env = gym.make('CryptoTrading-v0')`
+- Environment with **Unrealized PnL** reward function is now built using `env = gym.make('UnRealizedPnLEnv-v0')` rather than `env = gym.make('CryptoTrading-v0')`

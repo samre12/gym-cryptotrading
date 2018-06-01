@@ -24,10 +24,6 @@ class Generator:
         self.horizon = horizon
 
         self._load_data()
-        
-    @property
-    def diff_blocks(self):
-        return self._diff_blocks
 
     @property
     def price_blocks(self):
@@ -54,15 +50,11 @@ class Generator:
         distinct_episodes = 0
 
         for name, indices in blocks.indices.items():
-            ''' 
-            Length of the block should exceed the history length and horizon by 1.
-            Extra 1 is required to normalize each price block by previos time stamp
-            '''
-            if len(indices) > (self.history_length + self.horizon + 1):
+            if len(indices) > (self.history_length + self.horizon):
                 
                 self._data_blocks.append(blocks.get_group(name))
                 # similarly, we subtract an extra 1 to calculate the number of distinct episodes
-                distinct_episodes = distinct_episodes + (len(indices) - (self.history_length + self.horizon) + 1 + 1)
+                distinct_episodes = distinct_episodes + (len(indices) - (self.history_length + self.horizon) + 1)
 
         data = None
         message_list = [
@@ -74,7 +66,6 @@ class Generator:
         map(logger.info, message_list)
 
     def _generate_attributes(self):
-        self._diff_blocks = []
         self._price_blocks = []
         self._timestamp_blocks = []
 
@@ -82,13 +73,7 @@ class Generator:
             block = data_block[['price_close', 'price_low', 'price_high', 'volume']]
             closing_prices = block['price_close']
 
-            diff_block = closing_prices.shift(-1)[:-1].subtract(closing_prices[:-1])
-
-            # currently normalizing the prices by previous prices of the same category
-            normalized_block = block.shift(-1)[:-1].truediv(block[:-1])        
-            
-            self._diff_blocks.append(diff_block.as_matrix())
-            self._price_blocks.append(normalized_block.as_matrix())
+            self._price_blocks.append(block)
             self._timestamp_blocks.append(data_block['DateTime_UTC'].values[1:])
         
         self._data_blocks = None #free memory
