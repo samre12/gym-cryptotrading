@@ -22,6 +22,10 @@ class BaseEnv:
         raise NotImplementedError
 
     @abstractmethod
+    def _get_new_supp(self):
+        raise NotImplementedError
+
+    @abstractmethod
     def _get_reward(self):
         raise NotImplementedError
 

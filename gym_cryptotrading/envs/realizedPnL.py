@@ -31,23 +31,3 @@ class RealizedPnLEnv(CryptoEnv):
             return self.reward
         else:
             return 0.0
-
-    def step(self, action):
-        if not self.episode_number or self.timesteps is self.horizon:
-            raise error.ResetNeeded()
-
-        state = self._get_new_state()
-        self._take_action(action)
-        reward = self._get_reward()
-
-        message = "Timestep {}:==: Action: {} ; Reward: {}".format(
-            self.timesteps, CryptoEnv.action_space.lookup[action], reward
-        )
-        self.logger.debug(message)
-        
-        self.timesteps = self.timesteps + 1
-        if self.timesteps is not self.horizon:
-            self.current = self.current + 1
-            return state, reward, False, float(self.horizon - self.timesteps)
-        else:
-            return state, reward, True, 0.0

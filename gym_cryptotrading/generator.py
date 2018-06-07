@@ -71,7 +71,6 @@ class Generator:
 
         for data_block in self._data_blocks:
             block = data_block[['price_close', 'price_low', 'price_high', 'volume']]
-            closing_prices = block['price_close']
 
             self._price_blocks.append(block)
             self._timestamp_blocks.append(data_block['DateTime_UTC'].values[1:])
