@@ -4,7 +4,7 @@ import time
 import datetime
 
 import tempfile
-import urllib2
+from urllib.request import urlopen
 import gzip
 
 import pandas as pd
@@ -107,7 +107,7 @@ class Generator:
         logger.info(message)
     
         path = os.path.join(Generator.temp_dir, 'coinbaseUSD.csv.gz')
-        f = urllib2.urlopen(URL)
+        f = urlopen(URL)
         with open(path, 'w') as buffer:
             buffer.write(f.read())
         message = 'Latest transactions saved to {}'.format(path)
